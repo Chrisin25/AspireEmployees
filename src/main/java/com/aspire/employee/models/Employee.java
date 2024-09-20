@@ -1,5 +1,6 @@
 package com.aspire.employee.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
@@ -11,8 +12,20 @@ public class Employee {
     String employeeName;
     String designation;
     int managerId;
+    @ManyToOne
+    @JoinColumn(name = "managerId",insertable=false, updatable=false)
+    @JsonIgnore
+    private Manager manager;
     String stream;
+    @ManyToOne
+    @JoinColumn(name = "streamName",insertable=false, updatable=false)
+    @JsonIgnore
+    private Stream streams;
     String accountName;
+    @ManyToOne
+    @JoinColumn(name = "accountName",insertable=false, updatable=false)
+    @JsonIgnore
+    private Account account;
 
     public String getEmployeeName() {
         return employeeName;
