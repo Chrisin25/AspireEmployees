@@ -11,9 +11,10 @@ public class Employee {
     Integer employeeId;
     String employeeName;
     String designation;
-    int managerId;
-
     private String streamName;
+    Integer managerId;
+   
+
     @ManyToOne
     @JoinColumn(name = "streamName", referencedColumnName = "streamName", insertable = false, updatable = false)
     @JsonIgnore
@@ -33,6 +34,19 @@ public class Employee {
     public void setEmployeeId(int employeeId) {
         this.employeeId = employeeId;
     }
+
+    public Integer getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(Integer employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public void setManagerId(Integer managerId) {
+        this.managerId = managerId;
+    }
+
 
     public String getEmployeeName() {
         return employeeName;
