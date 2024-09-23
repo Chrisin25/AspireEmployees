@@ -1,12 +1,15 @@
 package com.aspire.employee.models;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name="Account")
 public class Account {
     @Id
-    int accountId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Integer accountId;
+
+    @Column(unique = true)
     String accountName;
 
     public String getAccountName() {
