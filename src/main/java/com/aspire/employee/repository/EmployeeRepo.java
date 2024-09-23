@@ -17,5 +17,6 @@ public interface EmployeeRepo extends JpaRepository<Employee,Integer> {
 
     List<Employee> findAllByManagerId(Integer employeeId);
 
+
     public List<Employee> findAllEmployeesByDesignationAndStreamNameAndAccountName(String designation, String stream, String accountName);
 }

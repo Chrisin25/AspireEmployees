@@ -2,7 +2,9 @@ package com.aspire.employee.service;
 
 import com.aspire.employee.models.Account;
 import com.aspire.employee.models.Employee;
+
 import com.aspire.employee.models.Stream;
+
 import com.aspire.employee.repository.AccountRepo;
 import com.aspire.employee.repository.EmployeeRepo;
 import com.aspire.employee.repository.StreamRepo;
@@ -47,11 +49,11 @@ public class EmployeeService {
         return employee.getEmployeeId();
     }
 
-
     public List<Employee> getEmployeeService(String startsWith){
         return employeeRepo.findAllByEmployeeNameStartingWith(startsWith);
 
     }
+
 
     public List<Stream> getAllStreams() {
         return streamRepo.findAll();
@@ -134,4 +136,5 @@ public class EmployeeService {
             throw new IllegalArgumentException("Invalid employee ID");
         }
     }
+
 }
