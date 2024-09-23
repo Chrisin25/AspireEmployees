@@ -8,24 +8,31 @@ import jakarta.persistence.*;
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int employeeId;
+    Integer employeeId;
     String employeeName;
     String designation;
     int managerId;
+
+    private String streamName;
     @ManyToOne
-    @JoinColumn(name = "managerId",insertable=false, updatable=false)
+    @JoinColumn(name = "streamName", referencedColumnName = "streamName", insertable = false, updatable = false)
     @JsonIgnore
-    private Manager manager;
-    String stream;
+    private Stream stream;
+
+    private String accountName;
+
     @ManyToOne
-    @JoinColumn(name = "streamName",insertable=false, updatable=false)
-    @JsonIgnore
-    private Stream streams;
-    String accountName;
-    @ManyToOne
-    @JoinColumn(name = "accountName",insertable=false, updatable=false)
+    @JoinColumn(name = "accountName", referencedColumnName = "accountName", insertable = false, updatable = false)
     @JsonIgnore
     private Account account;
+
+    public int getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
+    }
 
     public String getEmployeeName() {
         return employeeName;
@@ -51,12 +58,12 @@ public class Employee {
         this.managerId = managerId;
     }
 
-    public String getStream() {
-        return stream;
+    public String getStreamName() {
+        return streamName;
     }
 
     public void setStream(String stream) {
-        this.stream = stream;
+        this.streamName = stream;
     }
 
     public String getAccountName() {
