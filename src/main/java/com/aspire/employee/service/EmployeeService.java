@@ -2,9 +2,7 @@ package com.aspire.employee.service;
 
 import com.aspire.employee.models.Account;
 import com.aspire.employee.models.Employee;
-
 import com.aspire.employee.models.Stream;
-
 import com.aspire.employee.repository.AccountRepo;
 import com.aspire.employee.repository.EmployeeRepo;
 import com.aspire.employee.repository.StreamRepo;
@@ -49,11 +47,11 @@ public class EmployeeService {
         return employee.getEmployeeId();
     }
 
+
     public List<Employee> getEmployeeService(String startsWith){
         return employeeRepo.findAllByEmployeeNameStartingWith(startsWith);
 
     }
-
 
     public List<Stream> getAllStreams() {
         return streamRepo.findAll();
@@ -69,7 +67,7 @@ public class EmployeeService {
             {
                 if(designation.equalsIgnoreCase("manager"))
                 {
-                    String streamName = employee.getStream();
+                    String streamName = employee.getStreamName();
 
                     Optional<Employee> validManager = employeeRepo.findByStreamAndManagerIdEquals(streamName, 0);
 
@@ -96,7 +94,7 @@ public class EmployeeService {
                                 Employee manager = validManager.get();
 
                                 String accName = manager.getAccountName();
-                                String streamName = manager.getStream();
+                                String streamName = manager.getStreamName();
 
                                 employee.setManagerId(managerId);
                                 employee.setAccountName(accName);
@@ -118,7 +116,7 @@ public class EmployeeService {
                     Employee manager = validManager.get();
 
                     String accName = manager.getAccountName();
-                    String streamName = manager.getStream();
+                    String streamName = manager.getStreamName();
 
                     employee.setManagerId(managerId);
                     employee.setAccountName(accName);
@@ -136,5 +134,4 @@ public class EmployeeService {
             throw new IllegalArgumentException("Invalid employee ID");
         }
     }
-
 }

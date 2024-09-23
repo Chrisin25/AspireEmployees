@@ -7,8 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface StreamRepo extends JpaRepository<Stream,Integer> {
     boolean existsByStreamName(String streamName);
-
     Stream findByName(String streamName);
-
-
 }

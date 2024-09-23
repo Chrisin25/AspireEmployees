@@ -13,7 +13,6 @@ public class Employee {
     String designation;
     private String streamName;
     Integer managerId;
-   
 
     @ManyToOne
     @JoinColumn(name = "streamName", referencedColumnName = "streamName", insertable = false, updatable = false)
@@ -26,10 +25,6 @@ public class Employee {
     @JoinColumn(name = "accountName", referencedColumnName = "accountName", insertable = false, updatable = false)
     @JsonIgnore
     private Account account;
-
-    public int getEmployeeId() {
-        return employeeId;
-    }
 
     public void setEmployeeId(int employeeId) {
         this.employeeId = employeeId;
@@ -46,7 +41,6 @@ public class Employee {
     public void setManagerId(Integer managerId) {
         this.managerId = managerId;
     }
-
 
     public String getEmployeeName() {
         return employeeName;
