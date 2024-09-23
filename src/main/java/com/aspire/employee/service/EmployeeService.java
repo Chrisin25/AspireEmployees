@@ -10,10 +10,9 @@ import java.util.List;
 public class EmployeeService {
     @Autowired
     EmployeeRepo employeeRepo;
+
     public List<Employee> getEmployeeService(String startsWith){
         return employeeRepo.findAllByEmployeeNameStartingWith(startsWith);
 
     }
-
-
 }
