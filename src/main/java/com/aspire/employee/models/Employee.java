@@ -13,6 +13,7 @@ public class Employee {
     String designation;
     private String streamName;
     Integer managerId;
+
     @ManyToOne
     @JoinColumn(name = "streamName", referencedColumnName = "streamName", insertable = false, updatable = false)
     @JsonIgnore
