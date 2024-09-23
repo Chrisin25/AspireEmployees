@@ -1,6 +1,7 @@
 package com.aspire.employee.service;
 
 import com.aspire.employee.models.Employee;
+import com.aspire.employee.models.Stream;
 import com.aspire.employee.repository.AccountRepo;
 import com.aspire.employee.repository.EmployeeRepo;
 import com.aspire.employee.repository.StreamRepo;
@@ -29,6 +30,11 @@ public class EmployeeService {
         if(!accountRepo.existsByAccountName(employee.getAccountName())){
             throw new IllegalArgumentException("account not found");
         }
+        Stream stream=streamRepo.findByStreamName(employee.getStreamName());
+        if(!stream.getAccountName().matches(employee.getAccountName())){
+            throw new IllegalArgumentException("stream not present in this account");
+
+        }
         if(employee.getDesignation().matches("Associate")) {
             employeeRepo.save(employee);
         }
@@ -43,7 +49,15 @@ public class EmployeeService {
         return employee.getEmployeeId();
     }
     public List<Employee> getEmployeeService(String startsWith){
-        return employeeRepo.findAllByEmployeeNameStartingWith(startsWith);
+        List<Employee> employeeList;
+        if(startsWith.isEmpty()){
+            throw new IllegalArgumentException("enter valid alphabet");
+        }
+        employeeList=employeeRepo.findAllByEmployeeNameStartingWith(startsWith);
+        if(employeeList.isEmpty()){
+            throw new IllegalArgumentException("no employee name starts with "+startsWith);
+        }
+        return employeeList;
 
     }
 
