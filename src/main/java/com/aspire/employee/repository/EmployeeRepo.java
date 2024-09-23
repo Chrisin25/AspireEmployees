@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface EmployeeRepo extends JpaRepository<Employee,Integer> {
     public List<Employee> findAllByEmployeeNameStartingWith(String startsWith);
+
+    public List<Employee> findAllEmployeesByDesignationAndStreamNameAndAccountName(String designation, String stream, String accountName);
 }
