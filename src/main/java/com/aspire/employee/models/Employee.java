@@ -9,6 +9,7 @@ public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer employeeId;
+
     String employeeName;
     String designation;
     private String streamName;
@@ -58,7 +59,7 @@ public class Employee {
         this.designation = designation;
     }
 
-    public int getManagerId() {
+    public Integer getManagerId() {
         return managerId;
     }
 

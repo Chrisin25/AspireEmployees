@@ -25,9 +25,8 @@ public interface EmployeeRepo extends JpaRepository<Employee,Integer> {
 
     public List<Employee> findAllEmployeesByDesignationAndStreamNameAndAccountName(String designation, String stream, String accountName);
 
-    Optional<Employee> findByStreamAndManagerIdEquals(String streamName, int i);
 
     List<Employee> findAllByManagerId(int employeeId);
 
-    Optional<Employee> findByIdAndManagerIdEqualsZero(Integer managerId);
+    boolean existsByEmployeeIdAndDesignationAndStreamName(int managerId, String manager, String streamName);
 }
