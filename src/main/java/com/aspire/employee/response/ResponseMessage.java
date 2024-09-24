@@ -1,7 +1,11 @@
 package com.aspire.employee.response;
 
 public class ResponseMessage {
-    String message;
+
+
+
+    private String message;
+
 
 
 
