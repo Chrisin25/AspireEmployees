@@ -75,9 +75,12 @@ public class EmployeeService {
 
     }
     public List<Stream> getAllStreams() {
-        return streamRepo.findAll();
+        List<Stream> streamList=streamRepo.findAll();
+        if(streamList.isEmpty()){
+            throw new IllegalArgumentException("no streams present");
+        }
+        return streamList;
     }
-
 
     public void updateEmployee(Integer employeeId, Integer managerId, String designation,String accountName) {
         Optional<Employee> validEmployee = employeeRepo.findById(employeeId);

@@ -25,7 +25,7 @@ public class EmployeeController {
     }
     @GetMapping("/employees")
     public List<Employee> getEmployee(
-            @RequestParam(required = false) String startsWith){
+            @RequestParam String startsWith){
         return employeeService.getEmployeeService(startsWith);
     }
     @GetMapping("/streams")
