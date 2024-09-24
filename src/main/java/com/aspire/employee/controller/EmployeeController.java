@@ -45,7 +45,7 @@ public class EmployeeController {
             @RequestParam(required = false) String designation
     )
     {
-        employeeService.updateEmployee(employeeId,managerId,designation);
+        employeeService.updateEmployee(employeeId,managerId,designation,accountName);
         ResponseMessage responseMessage = new ResponseMessage();
         responseMessage.setMessage("Successfully updated employee details");
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);

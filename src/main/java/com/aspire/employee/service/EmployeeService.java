@@ -67,7 +67,7 @@ public class EmployeeService {
     }
 
 
-    public void updateEmployee(Integer employeeId, Integer managerId, String designation) {
+    public void updateEmployee(Integer employeeId, Integer managerId, String designation,String accountName) {
         Optional<Employee> validEmployee = employeeRepo.findById(employeeId);
         if(validEmployee.isPresent())
         {
