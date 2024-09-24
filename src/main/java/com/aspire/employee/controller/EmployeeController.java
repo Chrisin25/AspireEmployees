@@ -1,6 +1,8 @@
 package com.aspire.employee.controller;
 
 import com.aspire.employee.models.Employee;
+import com.aspire.employee.models.Stream;
+import com.aspire.employee.response.ResponseMessage;
 import com.aspire.employee.response.ResponseMessageForCreate;
 import com.aspire.employee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,5 +27,27 @@ public class EmployeeController {
     public List<Employee> getEmployee(
             @RequestParam(required = false) String startsWith){
         return employeeService.getEmployeeService(startsWith);
+    }
+    @GetMapping("/streams")
+    public List<Stream> getStreams()
+    {
+        return employeeService.getAllStreams();
+    }
+
+    //PUT /api/v1/employees?employee-id={employee_id}&manager-id={manager_id}&account-name={account_name}&designation={designation}
+
+    //update employee details
+    @PutMapping("/employee")
+    public ResponseEntity<ResponseMessage> updateEmployee(
+            @RequestParam Integer employeeId,
+            @RequestParam(required = false) Integer managerId,
+            @RequestParam(required = false) String accountName,
+            @RequestParam(required = false) String designation
+    )
+    {
+        employeeService.updateEmployee(employeeId,managerId,designation);
+        ResponseMessage responseMessage = new ResponseMessage();
+        responseMessage.setMessage("Successfully updated employee details");
+        return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 }
