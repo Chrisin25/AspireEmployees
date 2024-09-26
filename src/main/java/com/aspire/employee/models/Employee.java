@@ -71,7 +71,7 @@ public class Employee {
         return streamName;
     }
 
-    public void setStream(String stream) {
+    public void setStreamName(String stream) {
         this.streamName = stream;
     }
 

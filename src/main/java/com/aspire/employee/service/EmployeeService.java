@@ -122,7 +122,7 @@ public class EmployeeService {
 
                                 employee.setManagerId(managerId);
                                 employee.setAccountName(accName);
-                                employee.setStream(streamName);
+                                employee.setStreamName(streamName);
 
                             } else {
                                 throw new IllegalArgumentException("Invalid manager ID");
@@ -144,7 +144,7 @@ public class EmployeeService {
 
                     employee.setManagerId(managerId);
                     employee.setAccountName(accName);
-                    employee.setStream(streamName);
+                    employee.setStreamName(streamName);
 
                 } else {
                     throw new IllegalArgumentException("Invalid manager ID");
