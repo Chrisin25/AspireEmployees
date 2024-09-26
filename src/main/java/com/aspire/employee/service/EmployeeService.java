@@ -1,6 +1,5 @@
 package com.aspire.employee.service;
 
-import com.aspire.employee.models.Account;
 import com.aspire.employee.models.Employee;
 import com.aspire.employee.models.Stream;
 import com.aspire.employee.repository.AccountRepo;
@@ -21,8 +20,15 @@ public class EmployeeService {
     @Autowired
     StreamRepo streamRepo;
     public int addEmployee(Employee employee){
+
+        if(employee.getEmployeeId()!=null){
+            throw new IllegalArgumentException("id should be auto generated");
+        }
         if(employee.getEmployeeName()==null || employee.getEmployeeName().matches("")){
-            throw new IllegalArgumentException("Invalid employeeName");
+            throw new IllegalArgumentException("specify valid employeeName");
+        }
+        if(employee.getDesignation()==null||employee.getStreamName()==null||employee.getAccountName()==null||employee.getManagerId()==null){
+            throw new IllegalArgumentException("designation,stream name,account name,managerId should have value");
         }
         if(employee.getManagerId()==0 && !employee.getDesignation().matches("Manager")){
             throw new IllegalArgumentException("Only managers can have managerId 0");
@@ -32,6 +38,13 @@ public class EmployeeService {
         }
         if(!accountRepo.existsByAccountName(employee.getAccountName())){
             throw new IllegalArgumentException("account not found");
+        }
+        Stream stream=streamRepo.findByStreamName(employee.getStreamName());
+        if(!stream.getAccountName().matches(employee.getAccountName())){
+            throw new IllegalArgumentException("stream not present in this account");
+        }
+        if(!employeeRepo.existsByEmployeeIdAndDesignationAndStreamName(employee.getManagerId(),"Manager",employee.getStreamName()) && employee.getDesignation().matches("Associate")){
+            throw new IllegalArgumentException("manager Id and stream does not match");
         }
         if(employee.getDesignation().matches("Associate")) {
             employeeRepo.save(employee);
@@ -44,21 +57,32 @@ public class EmployeeService {
                 throw new IllegalArgumentException("Manager already exists in the stream");
             }
         }
+        else{
+            throw new IllegalArgumentException("invalid designation");
+        }
         return employee.getEmployeeId();
     }
-
-
     public List<Employee> getEmployeeService(String startsWith){
-        return employeeRepo.findAllByEmployeeNameStartingWith(startsWith);
+        List<Employee> employeeList;
+        if(startsWith.isEmpty()){
+            throw new IllegalArgumentException("enter valid alphabet");
+        }
+        employeeList=employeeRepo.findAllByEmployeeNameStartingWith(startsWith);
+        if(employeeList.isEmpty()){
+            throw new IllegalArgumentException("no employee name starts with "+startsWith);
+        }
+        return employeeList;
 
     }
-
     public List<Stream> getAllStreams() {
-        return streamRepo.findAll();
+        List<Stream> streamList=streamRepo.findAll();
+        if(streamList.isEmpty()){
+            throw new IllegalArgumentException("no streams present");
+        }
+        return streamList;
     }
 
-
-    public void updateEmployee(Integer employeeId, Integer managerId, String designation) {
+    public void updateEmployee(Integer employeeId, Integer managerId, String designation,String accountName) {
         Optional<Employee> validEmployee = employeeRepo.findById(employeeId);
         if(validEmployee.isPresent())
         {
@@ -98,7 +122,7 @@ public class EmployeeService {
 
                                 employee.setManagerId(managerId);
                                 employee.setAccountName(accName);
-                                employee.setStream(streamName);
+                                employee.setStreamName(streamName);
 
                             } else {
                                 throw new IllegalArgumentException("Invalid manager ID");
@@ -120,7 +144,7 @@ public class EmployeeService {
 
                     employee.setManagerId(managerId);
                     employee.setAccountName(accName);
-                    employee.setStream(streamName);
+                    employee.setStreamName(streamName);
 
                 } else {
                     throw new IllegalArgumentException("Invalid manager ID");
@@ -135,3 +159,4 @@ public class EmployeeService {
         }
     }
 }
+

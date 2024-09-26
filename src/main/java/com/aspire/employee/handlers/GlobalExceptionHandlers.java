@@ -21,7 +21,7 @@ public class GlobalExceptionHandlers {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResponseMessage> handleGenericException(Exception ex) {
         ResponseMessage responseMessage = new ResponseMessage();
-        responseMessage.setMessage("An unexpected error occurred: " + ex.getMessage());
+        responseMessage.setMessage(ex.getMessage());
         return new ResponseEntity<>(responseMessage, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

@@ -8,9 +8,6 @@ import com.aspire.employee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.web.bind.annotation.PutMapping;
-
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,11 +25,9 @@ public class EmployeeController {
     }
     @GetMapping("/employees")
     public List<Employee> getEmployee(
-            @RequestParam(required = false) String startsWith){
+            @RequestParam String startsWith){
         return employeeService.getEmployeeService(startsWith);
     }
-
-    //get all streams
     @GetMapping("/streams")
     public List<Stream> getStreams()
     {
@@ -42,7 +37,7 @@ public class EmployeeController {
     //PUT /api/v1/employees?employee-id={employee_id}&manager-id={manager_id}&account-name={account_name}&designation={designation}
 
     //update employee details
-    @PutMapping
+    @PutMapping("/employee")
     public ResponseEntity<ResponseMessage> updateEmployee(
             @RequestParam Integer employeeId,
             @RequestParam(required = false) Integer managerId,
@@ -50,7 +45,7 @@ public class EmployeeController {
             @RequestParam(required = false) String designation
     )
     {
-        employeeService.updateEmployee(employeeId,managerId,designation);
+        employeeService.updateEmployee(employeeId,managerId,designation,accountName);
         ResponseMessage responseMessage = new ResponseMessage();
         responseMessage.setMessage("Successfully updated employee details");
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);
