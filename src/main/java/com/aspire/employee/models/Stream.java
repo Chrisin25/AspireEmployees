@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name="Stream")
+@Table(name = "Stream")
 public class Stream {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,6 +17,23 @@ public class Stream {
     @JoinColumn(name = "accountName", referencedColumnName = "accountName", insertable = false, updatable = false)
     @JsonIgnore
     private Account account;
+
+    public Integer getStreamId() {
+        return streamId;
+    }
+
+    public void setStreamId(Integer streamId) {
+        this.streamId = streamId;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
     public String getStreamName() {
         return streamName;
     }
