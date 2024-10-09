@@ -44,8 +44,12 @@ public class EmployeeController {
             @RequestParam(required = false) String designation
     )
     {
-        employeeService.updateEmployee(employeeId,managerId,designation);
         ResponseMessage responseMessage = new ResponseMessage();
+        if(managerId==null && designation==null){
+        responseMessage.setMessage("No details for update");
+        return new ResponseEntity<>(responseMessage, HttpStatus.BAD_REQUEST);
+        }
+        employeeService.updateEmployee(employeeId,managerId,designation);
         responseMessage.setMessage("Successfully updated employee details");
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
