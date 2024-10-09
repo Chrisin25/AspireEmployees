@@ -79,7 +79,7 @@ public class EmployeeControllerTest {
         ResponseMessage responseMessage = new ResponseMessage();
         responseMessage.setMessage("Successfully updated employee details");
 
-        doNothing().when(employeeService).updateEmployee(anyInt(), anyInt(), anyString(), anyString());
+        doNothing().when(employeeService).updateEmployee(anyInt(), anyInt(), anyString());
 
         mockMvc.perform(put("/api/v1/employee")
                         .param("employeeId", "1")
