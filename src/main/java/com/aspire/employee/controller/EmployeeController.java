@@ -41,11 +41,10 @@ public class EmployeeController {
     public ResponseEntity<ResponseMessage> updateEmployee(
             @RequestParam Integer employeeId,
             @RequestParam(required = false) Integer managerId,
-            @RequestParam(required = false) String accountName,
             @RequestParam(required = false) String designation
     )
     {
-        employeeService.updateEmployee(employeeId,managerId,designation,accountName);
+        employeeService.updateEmployee(employeeId,managerId,designation);
         ResponseMessage responseMessage = new ResponseMessage();
         responseMessage.setMessage("Successfully updated employee details");
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);
