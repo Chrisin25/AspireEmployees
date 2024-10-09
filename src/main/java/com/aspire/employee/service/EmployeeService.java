@@ -19,46 +19,37 @@ public class EmployeeService {
     AccountRepo accountRepo;
     @Autowired
     StreamRepo streamRepo;
-    public int addEmployee(Employee employee){
-
-        if(employee.getEmployeeId()!=null){
-            throw new IllegalArgumentException("id should be auto generated");
+    public int addEmployee(Employee employee) {
+        if (employee.getEmployeeId() != null) {
+            throw new IllegalArgumentException("ID should be auto-generated");
         }
-        if(employee.getEmployeeName()==null || employee.getEmployeeName().matches("")){
-            throw new IllegalArgumentException("specify valid employeeName");
+        if (employee.getEmployeeName() == null || employee.getEmployeeName().isEmpty()) {
+            throw new IllegalArgumentException("Specify a valid employee name");
         }
-        if(employee.getDesignation()==null||employee.getStreamName()==null||employee.getAccountName()==null||employee.getManagerId()==null){
-            throw new IllegalArgumentException("designation,stream name,account name,managerId should have value");
+        if (employee.getDesignation() == null || employee.getStreamName() == null ||
+                employee.getAccountName() == null || employee.getManagerId() == null) {
+            throw new IllegalArgumentException("Designation, stream name, account name, and managerId should have values");
         }
-        if(employee.getManagerId()==0 && !employee.getDesignation().matches("Manager")){
+        if (employee.getManagerId() == 0 && !employee.getDesignation().equals("Manager")) {
             throw new IllegalArgumentException("Only managers can have managerId 0");
+        } else if (employee.getDesignation().equals("Manager") && employee.getManagerId() != 0) {
+            throw new IllegalArgumentException("Manager must have managerId 0");
         }
-        if(!streamRepo.existsByStreamName(employee.getStreamName())){
-            throw new IllegalArgumentException("stream not found");
-        }
-        if(!accountRepo.existsByAccountName(employee.getAccountName())){
-            throw new IllegalArgumentException("account not found");
-        }
-        Stream stream=streamRepo.findByStreamName(employee.getStreamName());
-        if(!stream.getAccountName().matches(employee.getAccountName())){
-            throw new IllegalArgumentException("stream not present in this account");
-        }
-        if(!employeeRepo.existsByEmployeeIdAndDesignationAndStreamName(employee.getManagerId(),"Manager",employee.getStreamName()) && employee.getDesignation().matches("Associate")){
-            throw new IllegalArgumentException("manager Id and stream does not match");
-        }
-        if(employee.getDesignation().matches("Associate")) {
-            employeeRepo.save(employee);
-        }
-        else if(employee.getDesignation().matches("Manager")){
-            if(employeeRepo.findAllEmployeesByDesignationAndStreamNameAndAccountName(employee.getDesignation(),employee.getStreamName(),employee.getAccountName()).isEmpty()){
+        Stream stream = streamRepo.findByStreamName(employee.getStreamName());
+        if (stream == null || !stream.getAccountName().equals(employee.getAccountName())) {
+            throw new IllegalArgumentException("Stream or account not found, or mismatch");
+        }    if (employee.getDesignation().equals("Associate")) {
+            if (!employeeRepo.existsByEmployeeIdAndDesignationAndStreamName(
+                    employee.getManagerId(), "Manager", employee.getStreamName())) {
+                throw new IllegalArgumentException("Manager with the specified ID does not exist in the stream");
+            }
+            employeeRepo.save(employee);    } else if (employee.getDesignation().equals("Manager")) {
+            if (employeeRepo.findAllEmployeesByDesignationAndStreamNameAndAccountName(
+                    employee.getDesignation(), employee.getStreamName(), employee.getAccountName()).isEmpty()) {
                 employeeRepo.save(employee);
-            }
-            else{
+            } else {
                 throw new IllegalArgumentException("Manager already exists in the stream");
-            }
-        }
-        else{
-            throw new IllegalArgumentException("invalid designation");
+            }    } else {        throw new IllegalArgumentException("Invalid designation");
         }
         return employee.getEmployeeId();
     }
