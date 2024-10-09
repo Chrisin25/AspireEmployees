@@ -82,7 +82,7 @@ public class EmployeeService {
         return streamList;
     }
 
-    public void updateEmployee(Integer employeeId, Integer managerId, String designation,String accountName) {
+    public void updateEmployee(Integer employeeId, Integer managerId, String designation) {
         Optional<Employee> validEmployee = employeeRepo.findById(employeeId);
         if(validEmployee.isPresent())
         {
@@ -103,11 +103,11 @@ public class EmployeeService {
                         employee.setManagerId(0);
                     }
                 }
-                else if(designation.equalsIgnoreCase("employee"))
+                else if(designation.equalsIgnoreCase("associate"))
                 {
                     if(employee.getManagerId()!=0)
                     {
-                        throw new IllegalArgumentException("Already an employee!.");
+                        throw new IllegalArgumentException("Already an associate!.");
                     }
                     else {
                         List<Employee> employees = employeeRepo.findAllByManagerId(employee.getEmployeeId());

@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import com.aspire.employee.models.Employee;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -270,7 +271,7 @@ public class EmployeeServiceTest {
         when(employeeRepo.findByStreamAndManagerIdEquals("Development", 0)).thenReturn(Optional.empty());
         when(employeeRepo.save(existingEmployee)).thenReturn(existingEmployee);
 
-        employeeService.updateEmployee(1, null, "manager", null);
+        employeeService.updateEmployee(1, null, "manager");
         assertEquals(0, existingEmployee.getManagerId()); // Ensure managerId was set correctly
     }
 
@@ -279,7 +280,7 @@ public class EmployeeServiceTest {
         when(employeeRepo.findById(1)).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            employeeService.updateEmployee(1, null, null, null);
+            employeeService.updateEmployee(1, null, null);
         });
 
         assertEquals("Invalid employee ID", exception.getMessage());
@@ -295,7 +296,7 @@ public class EmployeeServiceTest {
         when(employeeRepo.findByStreamAndManagerIdEquals("Development", 0)).thenReturn(Optional.of(new Employee()));
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
-            employeeService.updateEmployee(1, 2, "manager", null);
+            employeeService.updateEmployee(1, 2, "manager");
         });
 
         assertEquals("A valid Manager is present for the current stream ", exception.getMessage());
@@ -310,9 +311,9 @@ public class EmployeeServiceTest {
         when(employeeRepo.findById(1)).thenReturn(Optional.of(employee));
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            employeeService.updateEmployee(1, null, "employee", null);
+            employeeService.updateEmployee(1, null, "Associate");
         });
-        assertEquals("Already an employee!.", exception.getMessage());
+        assertEquals("Already an associate!.", exception.getMessage());
     }
     @Test
     public void testUpdateEmployee_ThrowsException_WhenInvalidManagerId() {
@@ -328,7 +329,7 @@ public class EmployeeServiceTest {
         when(employeeRepo.findByIdAndManagerIdEqualsZero(2)).thenReturn(Optional.empty());
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            employeeService.updateEmployee(1, 2, null, null);
+            employeeService.updateEmployee(1, 2, null);
         });
         assertEquals("Invalid manager ID", exception.getMessage());
     }
@@ -336,19 +337,24 @@ public class EmployeeServiceTest {
     public void testUpdateEmployee_ThrowsException_WhenManagerHasEmployees() {
         Employee employee = new Employee();
         employee.setEmployeeId(1);
-        employee.setDesignation("employee");
+        employee.setDesignation("Manager");
         employee.setManagerId(0);
         employee.setStreamName("Development");
         employee.setAccountName("Account1");
 
+        Employee subordinate = new Employee();
+        subordinate.setEmployeeId(2);
+        subordinate.setManagerId(1);
+
         when(employeeRepo.findById(1)).thenReturn(Optional.of(employee));
-        when(employeeRepo.findAllByManagerId(employee.getEmployeeId())).thenReturn(List.of(new Employee()));
+        when(employeeRepo.findAllByManagerId(employee.getEmployeeId())).thenReturn(Collections.singletonList(subordinate));
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            employeeService.updateEmployee(1, null, "employee", null);
+            employeeService.updateEmployee(1, 0, "associate");
         });
         assertEquals("Manager have employees under them", exception.getMessage());
     }
+
     @Test
     public void testUpdateEmployee_UpdatesManagerIdAndAccountName() {
         Employee employee = new Employee();
@@ -367,7 +373,7 @@ public class EmployeeServiceTest {
         when(employeeRepo.findByStreamAndManagerIdEquals("Development", 0)).thenReturn(Optional.empty());
         when(employeeRepo.findByIdAndManagerIdEqualsZero(2)).thenReturn(Optional.of(manager));
 
-        employeeService.updateEmployee(1, 2, null, null);
+        employeeService.updateEmployee(1, 2, null);
 
         assertEquals(2, employee.getManagerId());
         assertEquals("Account1", employee.getAccountName());
