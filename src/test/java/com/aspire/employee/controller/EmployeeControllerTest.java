@@ -38,7 +38,7 @@ public class EmployeeControllerTest {
 
     @Test
     public void testAddEmployee() throws Exception {
-        Employee employee = new Employee(); // Initialize with required fields
+
         int generatedId = 1;
 
         when(employeeService.addEmployee(any(Employee.class))).thenReturn(generatedId);

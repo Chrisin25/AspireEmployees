@@ -2,10 +2,8 @@ package com.aspire.employee.service;
 
 import com.aspire.employee.models.Employee;
 import com.aspire.employee.models.Stream;
-import com.aspire.employee.repository.AccountRepo;
 import com.aspire.employee.repository.EmployeeRepo;
 import com.aspire.employee.repository.StreamRepo;
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +14,6 @@ import java.util.Optional;
 public class EmployeeService {
     @Autowired
     EmployeeRepo employeeRepo;
-    @Autowired
-    AccountRepo accountRepo;
     @Autowired
     StreamRepo streamRepo;
     public int addEmployee(Employee employee) {

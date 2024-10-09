@@ -1,7 +1,6 @@
 package com.aspire.employee.handlers;
 
 import com.aspire.employee.response.ResponseMessage;
-import org.apache.coyote.BadRequestException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -11,12 +10,6 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 
 @ControllerAdvice
 public class GlobalExceptionHandlers {
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ResponseMessage> handleBadRequestException(BadRequestException ex) {
-        ResponseMessage responseMessage = new ResponseMessage();
-        responseMessage.setMessage(ex.getMessage());
-        return new ResponseEntity<>(responseMessage, HttpStatus.BAD_REQUEST);
-    }
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ResponseMessage> handleIllegalArgumentException(IllegalArgumentException ex) {
         ResponseMessage responseMessage = new ResponseMessage();
