@@ -19,6 +19,7 @@ public class EmployeeService {
     AccountRepo accountRepo;
     @Autowired
     StreamRepo streamRepo;
+
     public int addEmployee(Employee employee) {
         if (employee.getEmployeeId() != null) {
             throw new IllegalArgumentException("ID should be auto-generated");
@@ -38,36 +39,42 @@ public class EmployeeService {
         Stream stream = streamRepo.findByStreamName(employee.getStreamName());
         if (stream == null || !stream.getAccountName().equals(employee.getAccountName())) {
             throw new IllegalArgumentException("Stream or account not found, or mismatch");
-        }    if (employee.getDesignation().equals("Associate")) {
+        }
+        if (employee.getDesignation().equals("Associate")) {
             if (!employeeRepo.existsByEmployeeIdAndDesignationAndStreamName(
                     employee.getManagerId(), "Manager", employee.getStreamName())) {
                 throw new IllegalArgumentException("Manager with the specified ID does not exist in the stream");
             }
-            employeeRepo.save(employee);    } else if (employee.getDesignation().equals("Manager")) {
+            employeeRepo.save(employee);
+        } else if (employee.getDesignation().equals("Manager")) {
             if (employeeRepo.findAllEmployeesByDesignationAndStreamNameAndAccountName(
                     employee.getDesignation(), employee.getStreamName(), employee.getAccountName()).isEmpty()) {
                 employeeRepo.save(employee);
             } else {
                 throw new IllegalArgumentException("Manager already exists in the stream");
-            }    } else {        throw new IllegalArgumentException("Invalid designation");
+            }
+        } else {
+            throw new IllegalArgumentException("Invalid designation");
         }
         return employee.getEmployeeId();
     }
-    public List<Employee> getEmployeeService(String startsWith){
+
+    public List<Employee> getEmployeeService(String startsWith) {
         List<Employee> employeeList;
-        if(startsWith.isEmpty()){
+        if (startsWith.isEmpty()) {
             throw new IllegalArgumentException("enter valid alphabet");
         }
-        employeeList=employeeRepo.findAllByEmployeeNameStartingWith(startsWith);
-        if(employeeList.isEmpty()){
-            throw new IllegalArgumentException("no employee name starts with "+startsWith);
+        employeeList = employeeRepo.findAllByEmployeeNameStartingWith(startsWith);
+        if (employeeList.isEmpty()) {
+            throw new IllegalArgumentException("no employee name starts with " + startsWith);
         }
         return employeeList;
 
     }
+
     public List<Stream> getAllStreams() {
-        List<Stream> streamList=streamRepo.findAll();
-        if(streamList.isEmpty()){
+        List<Stream> streamList = streamRepo.findAll();
+        if (streamList.isEmpty()) {
             throw new IllegalArgumentException("no streams present");
         }
         return streamList;
@@ -75,35 +82,25 @@ public class EmployeeService {
 
     public void updateEmployee(Integer employeeId, Integer managerId, String designation) {
         Optional<Employee> validEmployee = employeeRepo.findById(employeeId);
-        if(validEmployee.isPresent())
-        {
+        if (validEmployee.isPresent()) {
             Employee employee = validEmployee.get();
-            if(designation!=null)
-            {
-                if(designation.equalsIgnoreCase("manager"))
-                {
+            if (designation != null) {
+                if (designation.equalsIgnoreCase("manager")) {
                     String streamName = employee.getStreamName();
 
                     Optional<Employee> validManager = employeeRepo.findByStreamAndManagerIdEquals(streamName, 0);
 
-                    if(validManager.isPresent())
-                    {
+                    if (validManager.isPresent()) {
                         throw new IllegalArgumentException("A valid Manager is present for the current stream ");
-                    }
-                    else {
+                    } else {
                         employee.setManagerId(0);
                     }
-                }
-                else if(designation.equalsIgnoreCase("associate"))
-                {
-                    if(employee.getManagerId()!=0)
-                    {
+                } else if (designation.equalsIgnoreCase("associate")) {
+                    if (employee.getManagerId() != 0) {
                         throw new IllegalArgumentException("Already an associate!.");
-                    }
-                    else {
+                    } else {
                         List<Employee> employees = employeeRepo.findAllByManagerId(employee.getEmployeeId());
-                        if(employees.isEmpty())
-                        {
+                        if (employees.isEmpty()) {
                             Optional<Employee> validManager = employeeRepo.findByIdAndManagerIdEqualsZero(managerId);
                             if (validManager.isPresent()) {
                                 Employee manager = validManager.get();
@@ -118,14 +115,13 @@ public class EmployeeService {
                             } else {
                                 throw new IllegalArgumentException("Invalid manager ID");
                             }
-                        }
-                        else {
+                        } else {
                             throw new IllegalArgumentException("Manager have employees under them");
                         }
                     }
                 }
             }
-            if(managerId!=null) {
+            if (managerId != null) {
                 Optional<Employee> validManager = employeeRepo.findByIdAndManagerIdEqualsZero(managerId);
                 if (validManager.isPresent()) {
                     Employee manager = validManager.get();
@@ -143,9 +139,7 @@ public class EmployeeService {
             }
 
             employeeRepo.save(employee);
-        }
-        else
-        {
+        } else {
             throw new IllegalArgumentException("Invalid employee ID");
         }
     }

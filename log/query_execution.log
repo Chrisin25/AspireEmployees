@@ -1,0 +1,3 @@
+2024-10-09 09:42:01 [http-nio-8080-exec-2] INFO  LoggingAspect:22 - Method 'findByStreamName' in class 'StreamRepo' executed in 77 ms
+2024-10-09 09:42:01 [http-nio-8080-exec-2] INFO  LoggingAspect:22 - Method 'existsByEmployeeIdAndDesignationAndStreamName' in class 'EmployeeRepo' executed in 7 ms
+2024-10-09 09:42:01 [http-nio-8080-exec-2] INFO  LoggingAspect:22 - Method 'save' in class 'CrudRepository' executed in 40 ms
