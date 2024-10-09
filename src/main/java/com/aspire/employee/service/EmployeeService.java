@@ -77,12 +77,12 @@ public class EmployeeService {
     public void updateEmployee(Integer employeeId, Integer managerId, String designation) {
 
         Optional<Employee> validEmployee = employeeRepo.findById(employeeId);
-        if (!validEmployee.isPresent()) {
+        if (validEmployee.isEmpty()) {
             throw new IllegalArgumentException("Invalid employee ID");
         }
         Employee employee = validEmployee.get();
 
-        if (managerId != null && employeeId.equals(managerId)) {
+        if (employeeId.equals(managerId)) {
             throw new IllegalArgumentException("Manager ID and Employee ID cannot be the same");
         }
         if (designation != null) {
@@ -95,7 +95,7 @@ public class EmployeeService {
                 throw new IllegalArgumentException("Employee already has the same designation");
             }
 
-        if (designation != null) {
+
             if (designation.equalsIgnoreCase("manager")) {
                 String streamName = employee.getStreamName();
                 Optional<Employee> validManager = employeeRepo.findByStreamAndManagerIdEquals(streamName, 0);
@@ -105,7 +105,7 @@ public class EmployeeService {
                 } else {
                     employee.setManagerId(0);
                 }
-            }else if (designation.equalsIgnoreCase("associate")) {
+            } else if (designation.equalsIgnoreCase("associate")) {
                 if (employee.getManagerId() != 0) {
                     throw new IllegalArgumentException("Already an associate!");
                 } else {
@@ -125,8 +125,8 @@ public class EmployeeService {
                     }
                 }
             }
-        }
 
+        }
         if (managerId != null) {
             if (employee.getManagerId().equals(managerId)) {
                 throw new IllegalArgumentException("Employee is already under the same manager");
@@ -142,7 +142,7 @@ public class EmployeeService {
                 throw new IllegalArgumentException("Invalid manager ID");
             }
             }
-        }
+
         employeeRepo.save(employee);
     }
 }

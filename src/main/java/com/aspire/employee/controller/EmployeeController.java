@@ -23,7 +23,7 @@ public class EmployeeController {
         id = employeeService.addEmployee(employee);
         return new ResponseEntity<>(new ResponseMessageForCreate("Successfully created",id), HttpStatus.CREATED);
     }
-    @GetMapping("/employees")
+    @GetMapping("/employee")
     public List<Employee> getEmployee(
             @RequestParam String startsWith){
         return employeeService.getEmployeeService(startsWith);
