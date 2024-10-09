@@ -11,7 +11,7 @@ import java.util.Optional;
 
 @Repository
 public interface EmployeeRepo extends JpaRepository<Employee,Integer> {
-    public List<Employee> findAllByEmployeeNameStartingWith(String startsWith);
+    List<Employee> findAllByEmployeeNameStartingWith(String startsWith);
     @Query("SELECT e FROM Employee e WHERE e.employeeId = :id AND e.managerId = 0")
     Optional<Employee> findByIdAndManagerIdEqualsZero(@Param("id") Integer id);
 
@@ -20,9 +20,7 @@ public interface EmployeeRepo extends JpaRepository<Employee,Integer> {
 
     List<Employee> findAllByManagerId(Integer employeeId);
 
-    public List<Employee> findAllEmployeesByDesignationAndStreamNameAndAccountName(String designation, String stream, String accountName);
-
-    List<Employee> findAllByManagerId(int employeeId);
+    List<Employee> findAllEmployeesByDesignationAndStreamNameAndAccountName(String designation, String stream, String accountName);
 
     boolean existsByEmployeeIdAndDesignationAndStreamName(int managerId, String manager, String streamName);
 }
